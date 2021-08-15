@@ -1,0 +1,4 @@
+enum CategoryType {
+    DURATION,
+    PALESTRA
+}

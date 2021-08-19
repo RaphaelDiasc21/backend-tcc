@@ -17,12 +17,8 @@ import { StudentService } from './services/Student.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: "mysql",
-      host: "127.0.0.1",
-      port: 5050,
-      database: "tcc",
-      username: "root",
-      password: "none",
+      type: "sqlite",
+      database: "db",
       entities: [
         Instructor,
         Course,

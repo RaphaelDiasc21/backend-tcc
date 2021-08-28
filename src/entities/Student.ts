@@ -15,6 +15,9 @@ export class Student {
     @Column()
     email: string;
 
+    @Column()
+    password: string;
+
     @Column()    
     phone: string;
 

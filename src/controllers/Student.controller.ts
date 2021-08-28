@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from "@nestjs/common";
 import { Student } from "src/entities/Student";
 import { StudentService } from "src/services/Student.service";
 
@@ -20,7 +20,12 @@ export class StudentController {
     @Post()
     async create(@Body() student: Student) {
         console.log(student)
-        this.studentService.create(student)
+        try {
+            return await this.studentService.create(student)
+        }catch(e) {
+            throw new HttpException('Estudante já cadastrado', HttpStatus.CONFLICT)
+        }
+        
         return student
     }
 
@@ -34,5 +39,8 @@ export class StudentController {
         return this.studentService.delete(params.id)
     }
 
-    
+    @Post(":id/course/:courseId")
+    async assigneCourse(@Param() params) {
+        return this.studentService.assignedCourse(params.id,params.courseId)
+    }
 }

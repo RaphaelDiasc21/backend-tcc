@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinTable, JoinColumn } from 'typeorm';
 import { Course } from './Course';
 import { Question } from './Question';
 
@@ -11,9 +11,11 @@ export class Task {
     name: string;
 
     @ManyToOne(type => Course, course => course.tasks)
+    @JoinColumn()
     course: Course
 
-    @ManyToOne(type => Question, question => question.taskQuestion)
-    @JoinTable()
+    @OneToMany(type => Question, question => question.taskQuestion, {
+        eager: true
+    })
     questions: Question
 }

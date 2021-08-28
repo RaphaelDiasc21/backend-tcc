@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from "@nestjs/common";
 import { Instructor } from "src/entities/Instructor";
 import { InstructorService } from "src/services/Instructor.service";
 
@@ -20,8 +20,11 @@ export class InstructorController {
     @Post()
     async create(@Body() instructor: Instructor) {
         console.log(instructor)
-        this.instructorService.create(instructor)
-        return instructor
+        try {
+            return await this.instructorService.create(instructor)
+        }catch(e) {
+            throw new HttpException('Instrutor já cadastrado', HttpStatus.CONFLICT)
+        }
     }
 
     @Put(":id")

@@ -1,12 +1,26 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { Course } from "src/entities/Course";
 import { Student } from "src/entities/Student";
 import { getRepository } from "typeorm";
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class StudentService {
-    create(student: Student) {
+    async create(student: Student) {
         const studentRepository = getRepository(Student)
-        studentRepository.save(student)
+        let studentFinded = await this.getStudentByEmail(student.email)
+       
+        if(studentFinded.length == 0) {
+            student.password = await bcrypt.hash(student.password, 10);
+            return studentRepository.save(student)
+        }
+
+        throw new HttpException('Estudante já cadastrado', HttpStatus.CONFLICT)
+    }
+
+    async getStudentByEmail(email: string) {
+        const instructorRepository = getRepository(Student)
+        return await instructorRepository.find({where: { email: email }})
     }
 
     getStudents() {
@@ -27,5 +41,16 @@ export class StudentService {
     delete(studentId: number) {
         const studentRepository = getRepository(Student)
         return studentRepository.delete(studentId)
+    }
+
+    async assignedCourse(studentId: number, courseId: number) {
+        const studentRepository = getRepository(Student)
+        const courseRepository = getRepository(Course)
+
+        let student: Student = await studentRepository.findOne(studentId)
+        let course: Course = await courseRepository.findOne(courseId)
+
+        course.students.push(student)
+        return courseRepository.save(course)
     }
 }

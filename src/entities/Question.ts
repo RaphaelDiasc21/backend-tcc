@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { QuestionResponse } from './QuestionResponse';
 import { Task } from './Task';
 
@@ -11,8 +11,11 @@ export class Question {
     responseQuestion: string;
 
     @ManyToOne(type => Task, task => task.questions)
+    @JoinColumn()
     taskQuestion: Task;
 
-    @OneToMany(type => QuestionResponse, questionResponse => questionResponse.studentResponse)
+    @OneToMany(type => QuestionResponse, questionResponse => questionResponse.question,{
+        eager: true
+    })
     responses: QuestionResponse[]
 }

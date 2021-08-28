@@ -34,5 +34,8 @@ export class StudentController {
         return this.studentService.delete(params.id)
     }
 
-    
+    @Post(":id/course/:courseId")
+    async assigneCourse(@Param() params) {
+        return this.studentService.assignedCourse(params.id,params.courseId)
+    }
 }

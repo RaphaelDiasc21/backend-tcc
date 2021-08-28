@@ -2,16 +2,24 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { CourseController } from './controllers/Course.controller';
 import { InstructorController } from './controllers/Instructor.controller';
+import { QuestionController } from './controllers/Question.controller';
+import { QuestionResponseController } from './controllers/QuestionResponse.controller';
 import { StudentController } from './controllers/Student.controller';
+import { TaskController } from './controllers/Task.controller';
 import { Course } from './entities/Course';
 import { Instructor } from './entities/Instructor';
 import { Question } from './entities/Question';
 import { QuestionResponse } from './entities/QuestionResponse';
 import { Student } from './entities/Student';
 import { Task } from './entities/Task';
+import { CourseService } from './services/Course.service';
 import { InstructorService } from './services/Instructor.service';
+import { QuestionService } from './services/Question.service';
+import { QuestionResponseService } from './services/QuestionResponse.service';
 import { StudentService } from './services/Student.service';
+import { TaskService } from './services/Task.service';
 
 
 @Module({
@@ -33,12 +41,20 @@ import { StudentService } from './services/Student.service';
   controllers: [
     AppController,
     StudentController,
-    InstructorController
+    InstructorController,
+    CourseController,
+    QuestionController,
+    QuestionResponseController,
+    TaskController
   ],
   providers: [
     AppService, 
     StudentService,
-    InstructorService  
+    InstructorService  ,
+    CourseService,
+    TaskService,
+    QuestionService,
+    QuestionResponseService
   ],
 })
 export class AppModule {}

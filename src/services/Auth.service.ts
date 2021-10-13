@@ -52,7 +52,7 @@ export class AuthService {
     }
 
     generateJwt(email,firstName,lastName,userType) {
-        return this.jwtService.sign({
+         return this.jwtService.sign({
             email: email,
             name: firstName + " " + lastName,
             userType: userType
@@ -62,7 +62,14 @@ export class AuthService {
         const isMatched = await this.validatePassword(authDTO.password, instructorFromDatabase.password)
 
         if(isMatched) {
-            return this.generateJwt(instructorFromDatabase.email,instructorFromDatabase.firstName,instructorFromDatabase.lastName,"Instrutor")
+            const token = this.generateJwt(instructorFromDatabase.email,instructorFromDatabase.firstName,instructorFromDatabase.lastName,"Instrutor")
+            console.log(token)
+            return {
+                token: token,
+                userType: 'Instrutor',
+                name: instructorFromDatabase.firstName,
+                email: instructorFromDatabase.email
+            }
         }
 
         throw new HttpException('Senha não confere',HttpStatus.BAD_REQUEST)
@@ -72,7 +79,14 @@ export class AuthService {
         const isMatched = await this.validatePassword(authDTO.password, studentFromDatabase.password)
 
         if(isMatched) {
-            return this.generateJwt(studentFromDatabase.email,studentFromDatabase.firstName,studentFromDatabase.lastName,"Estudante")
+            const token = this.generateJwt(studentFromDatabase.email,studentFromDatabase.firstName,studentFromDatabase.lastName,"Estudante")
+            console.log(token)
+            return {
+                token: token,
+                userType: 'Estudante',
+                name: studentFromDatabase.firstName,
+                email: studentFromDatabase.email
+            }
         }
 
         throw new HttpException('Senha não confere',HttpStatus.BAD_REQUEST)

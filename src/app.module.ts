@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthController } from './controllers/Auth.controller';
 import { CourseController } from './controllers/Course.controller';
 import { InstructorController } from './controllers/Instructor.controller';
 import { QuestionController } from './controllers/Question.controller';
@@ -49,7 +50,8 @@ import { TaskService } from './services/Task.service';
     CourseController,
     QuestionController,
     QuestionResponseController,
-    TaskController
+    TaskController,
+    AuthController
   ],
   providers: [
     AppService, 

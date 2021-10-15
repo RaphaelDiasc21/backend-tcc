@@ -1,10 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { Course } from "src/entities/Course";
+import { Instructor } from "src/entities/Instructor";
 import { CourseService } from "src/services/Course.service";
+import { InstructorService } from "src/services/Instructor.service";
 
 @Controller("courses")
 export class CourseController {
-    constructor(private courseService: CourseService) {}
+    constructor(
+        private courseService: CourseService,
+        private instructorService: InstructorService
+    ) {}
 
     @Get()
     async courses() {
@@ -16,8 +21,10 @@ export class CourseController {
         return this.courseService.getCourseId(params.id)
     }
 
-    @Post()
-    async create(@Body() course: Course) {
+    @Post(":instructor_email")
+    async create(@Body() course: Course,@Param() params) {
+        const instructor: Instructor[] = await this.instructorService.getInstructorByEmail(params.instructor_email)
+        course.instructor = instructor[0]
         this.courseService.create(course)
         return course
     }

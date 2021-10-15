@@ -103,5 +103,7 @@ export class AuthService {
         if(studentFetched.length > 0) {
             return this.authenticateStudent(authDTO,studentFetched[0])
         }
+
+        throw new HttpException('Usuário não encontrado',HttpStatus.BAD_REQUEST)
     }
 }

@@ -15,6 +15,9 @@ export class Course {
     category: CategoryType;
 
     @Column()
+    description: string;
+
+    @Column()
     dateTime: Date;
     
     @Column()

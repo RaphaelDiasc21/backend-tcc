@@ -67,6 +67,7 @@ export class AuthService {
             return {
                 token: token,
                 userType: 'Instrutor',
+                userId: instructorFromDatabase.id,
                 name: instructorFromDatabase.firstName,
                 email: instructorFromDatabase.email
             }
@@ -84,6 +85,7 @@ export class AuthService {
             return {
                 token: token,
                 userType: 'Estudante',
+                userId: studentFromDatabase.id,
                 name: studentFromDatabase.firstName,
                 email: studentFromDatabase.email
             }

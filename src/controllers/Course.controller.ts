@@ -13,7 +13,7 @@ export class CourseController {
 
     @Get()
     async courses() {
-        return this.courseService.getCourses()
+        return await this.courseService.getCourses()
     }
 
     @Get(":id")
@@ -21,12 +21,23 @@ export class CourseController {
         return this.courseService.getCourseId(params.id)
     }
 
-    @Post(":instructor_email")
+    @Get("/instructor/:instructor_id")
+    async findByInstructor(@Param() params) {
+        const instructor: Instructor = await this.instructorService.getInstructorById(params.instructor_id)
+        return await this.courseService.getCoursesByInstructor(instructor)
+    }
+
+    @Post(":instructor_id")
     async create(@Body() course: Course,@Param() params) {
-        const instructor: Instructor[] = await this.instructorService.getInstructorByEmail(params.instructor_email)
-        course.instructor = instructor[0]
+        const instructor: Instructor = await this.instructorService.getInstructorById(params.instructor_id)
+        course.instructor = instructor
         this.courseService.create(course)
         return course
+    }
+
+    @Post("/subscription/:course_id/student/:student_id")
+    async subscription(@Param() params) {
+        this.courseService.subscription(params.course_id,params.student_id)
     }
 
     @Put(":id")
